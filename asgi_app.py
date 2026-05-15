@@ -69,6 +69,38 @@ app = FastAPI(
 )
 
 
+def _safe_tools_count():
+    """Defensive access to FastMCP's private `_tool_manager._tools` API.
+
+    FastMCP version skew can rename/remove this private attribute and raise
+    AttributeError, which 500s /health and breaks deployment health probes.
+    Return the literal "ok" when introspection fails — the count is
+    informational, not load-bearing.
+    """
+    try:
+        tm = getattr(mcp_server, "_tool_manager", None)
+        if tm is None:
+            return "ok"
+        tools = getattr(tm, "_tools", None)
+        return len(tools) if tools is not None else "ok"
+    except Exception:
+        return "ok"
+
+
+def _safe_tools_iter():
+    """Defensive iterator over registered tools — empty list when introspection fails."""
+    try:
+        tm = getattr(mcp_server, "_tool_manager", None)
+        if tm is None:
+            return []
+        tools = getattr(tm, "_tools", None)
+        if tools is None:
+            return []
+        return list(tools.values())
+    except Exception:
+        return []
+
+
 @app.get("/health")
 async def health_check():
     """Health check endpoint for monitoring"""
@@ -76,7 +108,7 @@ async def health_check():
         "status": "healthy",
         "service": "Yargı MCP Server",
         "version": "0.1.0",
-        "tools_count": len(mcp_server._tool_manager._tools),
+        "tools_count": _safe_tools_count(),
     }
 
 
@@ -122,7 +154,7 @@ async def root():
 async def status():
     """Status endpoint with detailed information"""
     tools = []
-    for tool in mcp_server._tool_manager._tools.values():
+    for tool in _safe_tools_iter():
         tools.append({
             "name": tool.name,
             "description": tool.description[:100] + "..." if len(tool.description) > 100 else tool.description
