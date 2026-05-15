@@ -1,3 +1,15 @@
+> # 🍴 Maaty Fork
+>
+> Bu repo, [`saidsurucu/yargi-mcp`](https://github.com/saidsurucu/yargi-mcp) deposunun **Maaty** (https://maaty.net) tarafından maintain edilen bir fork'udur. Türk hukuk AI asistanı Maaty'nin production stack'i ile birlikte kullanılmak üzere küçük defansif eklemeler içerir.
+>
+> **Orijinal yazar:** [Said Sürücü](https://github.com/saidsurucu) — temel Yargı MCP araç setinin tasarımı ve geliştirilmesi.
+> **Maaty değişiklikleri:** Bkz. [`NOTICE`](./NOTICE) dosyası ve git log.
+> **Lisans:** MIT (orijinal kopya korunmuştur — bkz. [`LICENSE`](./LICENSE)).
+>
+> Maaty'nin defansif geliştirmelerinden upstream'e uygun olanlar (örn. `_safe_tools_count`) PR olarak `saidsurucu/yargi-mcp`'ye önerilebilir.
+
+---
+
 # Yargı MCP: Türk Hukuk Kaynakları için MCP Sunucusu
 
 > ## 🚨 SUNUCU YENİ ADRESE TAŞINDI
