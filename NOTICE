@@ -1,0 +1,39 @@
+Yargı MCP — Maaty Fork
+=======================
+
+This is `memirutku/yargi-mcp-maaty`, a Maaty-maintained fork of:
+
+    Original repository: https://github.com/saidsurucu/yargi-mcp
+    Original author: Said Sürücü (https://github.com/saidsurucu)
+    Original license: MIT (see LICENSE — copyright © 2025 saidsurucu)
+
+The original LICENSE file is preserved unchanged. Modifications made for
+the Maaty project (https://maaty.net) are documented below and are also
+licensed under the MIT terms of the original work.
+
+
+Maaty Modifications
+-------------------
+
+* asgi_app.py
+    Added defensive `_safe_tools_count()` and `_safe_tools_iter()` helpers
+    that guard `mcp_server._tool_manager._tools` access against FastMCP
+    private-API drift, preventing 500 responses on /health and /status
+    when introspection fails. (This change is upstream-friendly and may be
+    proposed as an upstream PR.)
+
+* .github/workflows/docker-publish.yml
+    Container image publishing workflow that builds linux/amd64 +
+    linux/arm64 images on every push to main and on `maaty-v*` tags,
+    publishing to `ghcr.io/memirutku/yargi-mcp-maaty`. This workflow is
+    Maaty-deployment-specific and is not intended for upstream.
+
+
+Attribution and Credits
+-----------------------
+
+All original copyright and authorship are retained. Maaty thanks Said
+Sürücü for the foundational legal MCP tooling that this fork builds on.
+
+Maaty project: https://maaty.net
+Maaty fork maintainer: https://github.com/memirutku
