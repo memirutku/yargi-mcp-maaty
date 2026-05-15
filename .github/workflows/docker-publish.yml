@@ -48,14 +48,19 @@ jobs:
             type=raw,value=latest,enable={{is_default_branch}}
             type=sha,prefix=sha-,format=short
 
-      - name: Build and push multi-arch image
+      - name: Build and push image (linux/amd64)
         uses: docker/build-push-action@v6
         with:
           context: .
           file: ./Dockerfile
-          platforms: linux/amd64,linux/arm64
+          platforms: linux/amd64
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+      # NOTE: linux/arm64 disabled initially. Multi-arch QEMU emulation of
+      # arm64 caused build timeouts/failures on first attempt. Once amd64
+      # builds are green, we can add arm64 back via a separate workflow
+      # step or matrix strategy. Maaty production server is x86_64 — amd64
+      # alone is sufficient for prod deploy.
